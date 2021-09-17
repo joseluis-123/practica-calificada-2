@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware('auth')->group( function () {
+    Route::get('dashboard', [ ProductController::class, 'index'])->name('dashboard');
+
+    Route::get('producto', [ProductController::class, 'create'])->name('producto.create');
+    Route::post('producto', [ProductController::class, 'store'])->name('producto.store');
+    
+});
 
 require __DIR__.'/auth.php';
